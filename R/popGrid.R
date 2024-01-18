@@ -145,7 +145,11 @@
 #' newadm2@data$NAME_2OLD = newadm2@data$NAME_2
 #' newadm2@data$NAME_2 = admin2.IDs
 #' newadm2$NAME_2 = admin2.IDs
-#' temp <- terra::aggregate(newadm2, by="NAME_2")
+#' temp <- terra::aggregate(as(newadm2, "SpatVector"), by="NAME_2")
+#' 
+#' library(sf)
+#' temp <- sf::st_as_sf(temp)
+#' temp <- sf::as_Spatial(temp)
 #' 
 #' tempData = newadm2@data[-unknown8I,]
 #' tempData = tempData[order(tempData$NAME_2),]
@@ -180,7 +184,6 @@
 #' p4s = paste0("+proj=laea +x_0=0 +y_0=0 +lon_0=", midLon, 
 #'              " +lat_0=", midLat, " +units=km")
 #' 
-#' library(sf)
 #' adm1_sf = st_as_sf(adm1)
 #' adm1proj_sf = st_transform(adm1_sf, p4s)
 #' adm1proj = as(adm1proj_sf, "Spatial")
@@ -1046,7 +1049,11 @@ calibrateByRegion = function(pointTotals, pointRegions, regions, regionTotals) {
 #' newadm2@data$NAME_2OLD = newadm2@data$NAME_2
 #' newadm2@data$NAME_2 = admin2.IDs
 #' newadm2$NAME_2 = admin2.IDs
-#' temp <- terra::aggregate(newadm2, by="NAME_2")
+#' temp <- terra::aggregate(as(newadm2, "SpatVector"), by="NAME_2")
+#' 
+#' library(sf)
+#' temp <- sf::st_as_sf(temp)
+#' temp <- sf::as_Spatial(temp)
 #' 
 #' tempData = newadm2@data[-unknown8I,]
 #' tempData = tempData[order(tempData$NAME_2),]
@@ -1182,7 +1189,11 @@ poppRegionFromPopMat = function(popMat, regions) {
 #' newadm2@data$NAME_2OLD = newadm2@data$NAME_2
 #' newadm2@data$NAME_2 = admin2.IDs
 #' newadm2$NAME_2 = admin2.IDs
-#' temp <- terra::aggregate(newadm2, by="NAME_2")
+#' temp <- terra::aggregate(as(newadm2, "SpatVector"), by="NAME_2")
+#' 
+#' library(sf)
+#' temp <- sf::st_as_sf(temp)
+#' temp <- sf::as_Spatial(temp)
 #' 
 #' tempData = newadm2@data[-unknown8I,]
 #' tempData = tempData[order(tempData$NAME_2),]

@@ -168,8 +168,8 @@ quantity is the fine scale prevalence in that areal unit.
 
 Note that these functions can be used for either simulating populations for simulation 
 studies, or for generating predictions accounting for uncertainty in EA locations 
-and fine scale variation occuring at the EA level due to EA level iid random effects. 
-Required, however, is a seperately fit EA level spatial risk model 
+and fine scale variation occurring at the EA level due to EA level iid random effects. 
+Required, however, is a separately fit EA level spatial risk model 
 and information on the spatial population density and the population frame.
 }
 \section{Functions}{
@@ -232,7 +232,11 @@ newadm2@data = cbind(newadm2@data, NAME_2OLD = newadm2@data$NAME_2)
 newadm2@data$NAME_2OLD = newadm2@data$NAME_2
 newadm2@data$NAME_2 = admin2.IDs
 newadm2$NAME_2 = admin2.IDs
-temp <- terra::aggregate(newadm2, by="NAME_2")
+temp <- terra::aggregate(as(newadm2, "SpatVector"), by="NAME_2")
+
+library(sf)
+temp <- sf::st_as_sf(temp)
+temp <- sf::as_Spatial(temp)
 
 tempData = newadm2@data[-unknown8I,]
 tempData = tempData[order(tempData$NAME_2),]
@@ -265,7 +269,6 @@ midLat = mean(adm1@bbox[2,])
 p4s = paste0("+proj=laea +x_0=0 +y_0=0 +lon_0=", midLon, 
              " +lat_0=", midLat, " +units=km")
 
-library(sf)
 adm1_sf = st_as_sf(adm1)
 adm1proj_sf = st_transform(adm1_sf, p4s)
 adm1proj = as(adm1proj_sf, "Spatial")
@@ -388,7 +391,9 @@ aggregate(simPop$eaPop$eaSamples[,1], by=list(area=popMatKenya$subarea), FUN=sum
 # (mapPlot takes longer when it doesn't save to a file)
 tempDirectory = "~/"
 
-# pixel level
+# pixel level plots. Some pixels have no simulated EAs, in which case they will be 
+# plotted as white. Expected noisy looking plots of fine scale risk and prevalence 
+# due to EAs being discrete, as compared to a very smooth plot of smooth risk.
 zlim = c(0, quantile(probs=.995, c(simPop$pixelPop$pFineScalePrevalence, 
                                    simPop$pixelPop$pFineScaleRisk, 
                                    simPop$pixelPop$pSmoothRisk), na.rm=TRUE))
